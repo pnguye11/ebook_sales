@@ -4,6 +4,28 @@
       <h1 class="display-3 mt-3 pt-5">
         Web development Ebook
       </h1><p class="lead">Node practice with stripe API</p>
+        <form action="/charge" method="POST">
+          <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button pb-3"
+            data-key="pk_test_G3zChCqOlDnDRdKGnCbsmJuD"
+            data-amount="75000"
+            data-name="Web Development Ebook"
+            data-description="Widget"
+            data-image="/img/marketplace.png"
+            data-locale="auto">
+          </script>
+          <script>
+            //hide default button
+
+            document.getElementsByClassName('stripe-button-el')[0]
+            .style.display = 'none';
+          </script>
+          <button type="submit" class="btn btn-outline-dark text-white btn-lg">Purchase for $75</button>
+        </form>
     </div>
+    <div class="col-md-6">
+      <img src="/img/book.png" alt="" class="img-fluid">
+    </div>
+
   </div>
 </section>
