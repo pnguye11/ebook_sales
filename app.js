@@ -22,7 +22,29 @@ app.use(express.static(`${__dirname}/public`));
 
 app.get('/', (req, res) =>{
   res.render('index');
-})
+});
+
+//Charge route
+app.post('/charge', (req, res) => {
+  const amount = 7500;
+
+  ///testing
+  // console.log(req.body);
+  // res.send('Test')
+
+  ////customer
+  stripe.customer.create({
+    email: req.body.stripeEmail,
+    source: req.body.stripeToken
+  })
+  .then(customer => stripe.charges.create({
+    amount,
+    description: 'Web Development Ebook',
+    currency: 'usd',
+    customer:customer.id
+  }))
+  .then(charge => res.render('sucess'));
+});
 
 
 //// deployment and localhost
