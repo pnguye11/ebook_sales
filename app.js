@@ -1,41 +1,33 @@
 const express = require('express');
-const keys = require('./config/keys')
-const stripe = require('stripe')('keys.stripeSecretKey');
+const keys = require('./config/keys');
+const stripe = require('stripe')(keys.stripeSecretKey);
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 
-
-/// start the app
 const app = express();
 
-//// handlebars middleware
-app.engine('handlebars', exphbs({defaultLayout:'main'}));
+// Handlebars Middleware
+app.engine('handlebars',exphbs({defaultLayout:'main'}));
 app.set('view engine', 'handlebars');
 
-//body parsers
+// Body Parser Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
-/// set static folder
-
+// Set Static Folder
 app.use(express.static(`${__dirname}/public`));
-// index Routes
 
-app.get('/', (req, res) =>{
+// Index Route
+app.get('/', (req, res) => {
   res.render('index', {
-    stripePublishableKey : keys.stripePublishableKey
+    stripePublishableKey: keys.stripePublishableKey
   });
 });
 
-//Charge route
+// Charge Route
 app.post('/charge', (req, res) => {
-  const amount = 75000;
+  const amount = 2500;
 
-  ///testing
-  // console.log(req.body);
-  // res.send('Test')
-
-  ////customer
   stripe.customers.create({
     email: req.body.stripeEmail,
     source: req.body.stripeToken
@@ -46,14 +38,11 @@ app.post('/charge', (req, res) => {
     currency: 'usd',
     customer: customer.id
   }))
-  .then(charge => res.render('sucess'));
-})
+  .then(charge => res.render('success'));
+});
 
-
-//// deployment and localhost
 const port = process.env.PORT || 5000;
 
-/// start server.
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
