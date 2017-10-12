@@ -1,5 +1,6 @@
 const express = require('express');
-const stripe = require('stripe')('pk_test_G3zChCqOlDnDRdKGnCbsmJuD');
+const keys = require('./config/keys')
+const stripe = require('stripe')('keys.stripeSecretKey');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 
@@ -21,19 +22,21 @@ app.use(express.static(`${__dirname}/public`));
 // index Routes
 
 app.get('/', (req, res) =>{
-  res.render('index');
+  res.render('index', {
+    stripePublishableKey : keys.stripePublishableKey
+  });
 });
 
 //Charge route
 app.post('/charge', (req, res) => {
-  const amount = 7500;
+  const amount = 75000;
 
   ///testing
   // console.log(req.body);
   // res.send('Test')
 
   ////customer
-  stripe.customer.create({
+  stripe.customers.create({
     email: req.body.stripeEmail,
     source: req.body.stripeToken
   })
@@ -41,10 +44,10 @@ app.post('/charge', (req, res) => {
     amount,
     description: 'Web Development Ebook',
     currency: 'usd',
-    customer:customer.id
+    customer: customer.id
   }))
   .then(charge => res.render('sucess'));
-});
+})
 
 
 //// deployment and localhost
