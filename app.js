@@ -8,12 +8,12 @@ const exphbs = require('express-handlebars');
 const app = express();
 
 //// handlebars middleware
-app.engine('handlebars, exphbs({defaultLayout: 'main'})');
-app.set('view engine, handlebars');
+app.engine('handlebars', exphbs({defaultLayout:'main'}));
+app.set('view engine', 'handlebars');
 
 //body parsers
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extened:false}));
+app.use(bodyParser.urlencoded({extended:false}));
 
 /// set static folder
 
